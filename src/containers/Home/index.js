@@ -2,7 +2,8 @@
  * Created by liekkas on 16/2/19.
  */
 import React, { PropTypes } from 'react'
-
+import { ECharts } from '../../components'
+import { getInitLineBarChart } from '../../components/ECharts/initOptions'
 class Home extends React.Component {
   constructor(props) {
     super(props)
@@ -14,8 +15,8 @@ class Home extends React.Component {
   render() {
     const { foo } = this.props
     return (
-      <div>
-        {foo}
+      <div style={{ width: '100%',height: '90vh' }}>
+        <ECharts config={getInitLineBarChart('bar')}/>
       </div>
     )
   }

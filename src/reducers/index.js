@@ -1,20 +1,13 @@
 /**
  * Created by liekkas on 15/12/17.
  */
-import { ActionTypes } from '../actions';
-import { fromJS } from 'immutable';
+import { combineReducers } from 'redux-immutablejs'
+import globalReducer from './globalReducer'
+import otherReducer from './otherReducer'
 
-const initState = fromJS({
-  user: {
-    id: 'No10000',
-    name: 'root',
-    role: 'admin',
-  }
+const rootReducer = combineReducers({
+  global: globalReducer,
+  other: otherReducer,
 })
 
-export default function rootReducer(state = initState, action = {}) {
-  switch (action.type) {
-    case ActionTypes.INIT_USER:
-      return state
-  }
-}
+export default rootReducer
