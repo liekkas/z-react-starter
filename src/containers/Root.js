@@ -5,7 +5,7 @@ import { Router } from 'react-router'
 export default class Root extends React.Component {
   get content () {
     return (
-      <Router>
+      <Router history={this.props.history}>
         {this.props.route}
       </Router>
     )
@@ -25,7 +25,6 @@ export default class Root extends React.Component {
       <Provider store={this.props.store}>
         <div>
           {this.content}
-          {this.devTools}
         </div>
       </Provider>
     )
@@ -34,5 +33,6 @@ export default class Root extends React.Component {
 
 Root.propTypes = {
   route: PropTypes.element.isRequired,
-  store: PropTypes.object.isRequired
+  store: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 }

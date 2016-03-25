@@ -1,17 +1,12 @@
 import React from 'react'
-import { Route, IndexRoute } from 'react-router'
-import { Home, ModuleA } from './containers'
+import { Route, Redirect, IndexRoute } from 'react-router'
+import { App, Home, ModuleA } from './containers'
 import { NotFound, About } from './components'
 
-const App = (props) => <div>{props.children}</div>
-
-const AppRouter = (
+export default (store) => (
   <Route path="/" component={App}>
     <IndexRoute component={Home} />
-    <Route path="module" component={ModuleA} />
-    <Route path="about" component={About} />
-    <Route path="*" component={NotFound} status={404}/>
+    <Route path="moduleA" component={ModuleA} />
+    <Route path="*" component={Home} status={404} />
   </Route>
-);
-
-export default AppRouter;
+)

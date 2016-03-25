@@ -116,20 +116,20 @@ webpackConfig.module.loaders = [{
       : ['es2015', 'react', 'stage-0']
   }
 },
-{
-  test: /\.json$/,
-  loader: 'json'
-}]
+  {
+    test: /\.json$/,
+    loader: 'json'
+  }]
 
 // Styles
 const cssLoader = !config.compiler_css_modules
   ? 'css?sourceMap'
   : [
-    'css?modules',
-    'sourceMap',
-    'importLoaders=1',
-    'localIdentName=[name]__[local]___[hash:base64:5]'
-  ].join('&')
+  'css?modules',
+  'sourceMap',
+  'importLoaders=1',
+  'localIdentName=[name]__[local]___[hash:base64:5]'
+].join('&')
 
 webpackConfig.module.loaders.push({
   test: /\.scss$/,
@@ -139,6 +139,17 @@ webpackConfig.module.loaders.push({
     cssLoader,
     'postcss',
     'sass?sourceMap'
+  ]
+})
+
+webpackConfig.module.loaders.push({
+  test: /\.less$/,
+  include: /src/,
+  loaders: [
+    'style',
+    cssLoader,
+    'postcss',
+    'less?sourceMap'
   ]
 })
 
@@ -161,6 +172,18 @@ webpackConfig.module.loaders.push({
     'css?sourceMap',
     'postcss',
     'sass?sourceMap'
+  ]
+})
+
+// Don't treat global LESS as modules
+webpackConfig.module.loaders.push({
+  test: /\.less$/,
+  exclude: /src/,
+  loaders: [
+    'style',
+    'css?sourceMap',
+    'postcss',
+    'less?sourceMap'
   ]
 })
 

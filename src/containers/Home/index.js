@@ -2,31 +2,25 @@
  * Created by liekkas on 16/2/19.
  */
 import React, { PropTypes } from 'react'
-import { ECharts } from '../../components'
-import { getInitLineBarChart } from '../../components/ECharts/initOptions'
+import { ECharts, Panel } from '../../components'
+import style from './style.scss'
+import _ from 'lodash'
+import {mockBarChartOption, mockMapOption} from '../../tools/dataMock'
+
 class Home extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      foo: 'bar',
-    }
+  onMapClick(e) {
+    console.log('>>> Home:',e)
   }
 
   render() {
-    const { foo } = this.props
     return (
-      <div style={{ width: '100%',height: '90vh' }}>
-        <ECharts config={getInitLineBarChart('bar')}/>
+      <div className={style.root}>
+        <ECharts option={mockMapOption()} config={{eventType: 'click', eventHandler: this.onMapClick}}/>
+        <div className={style.bar}>
+          <ECharts option={mockBarChartOption()}/>
+        </div>
       </div>
     )
   }
 }
-
-Home.propTypes = {
-  foo: PropTypes.string.isRequired,
-}
-Home.defaultProps = {
-  foo: 'Home',
-}
-
 export default Home

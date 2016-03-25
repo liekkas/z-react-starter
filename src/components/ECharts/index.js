@@ -5,77 +5,65 @@ import React, { PropTypes } from 'react'
 import echarts from 'echarts'
 import { Loader } from 'react-loaders'
 import { LOADING_STYLE } from '../../config'
-import fetch from 'isomorphic-fetch'
-import { parse } from '../../tools/jsonEx'
-import { generateOption } from './convertOptions';
 
-import _ from 'lodash'
+import china from './china.json'
+
+echarts.registerMap('china', china)
 
 class ECharts extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      id: _.uniqueId(new Date().getMilliseconds() + 'ECharts'),
-      remoteLoading: false,
-      remoteUrlChanged: false,
-      option: {},
-    }
-  }
 
-  componentWillMount() {
-    this._getData(this, this.props)
+  _renderChart() {
+    const chartDom = this.refs.chart
+    const chart = echarts.getInstanceByDom(chartDom) || echarts.init(chartDom)
+    const { option, config } = this.props
+    chart.on(config.eventType, config.eventHandler);
+    chart.setOption(option)
+    return chart
   }
 
   componentDidMount() {
-    const chart = echarts.init(document.getElementById(this.state.id))
-    chart.setOption(_.merge(this.state.option))
+//    window.addEventListener('resize', this.handleResize);
+    const chart = this._renderChart()
+  }
+
+  componentDidUpdate() {
+    this._renderChart()
   }
 
   componentWillUnmount() {
-    const chart = echarts.init(document.getElementById(this.state.id))
-    chart.dispose()
+    echarts.dispose(this.refs.chart)
+//    window.removeEventListener('resize', this.handleResize);
   }
 
-  _getData(bind, props) {
-    const { config } = props
-    //console.log('>>> PBECharts:_getData:', config)
-    //local是同步获取,remote是通过远程api异步获取
-    if (config.mode === 'local') {
-      this.setState({ option: parse(config.localData), remoteLoading: false })
-    } else {
-      this.setState({ remoteLoading: true })
-      fetch(config.remoteDataUrl)
-        .then(function (response) {
-          return response.json()
-        })
-        .then(function (result) {
-          const convert = _.merge(parse(config.localData),generateOption(result, config.type))
-          //console.log('>>> PBECharts:fetch', result, convert)
-          bind.setState({ option: convert, remoteLoading: false })
-          return result
-        })
-        .catch(function (ex) {
-          console.log(ex)
-        })
-    }
+  handleResize(e) {
+
   }
 
   render() {
     return (
       <div style={{
-        position: 'absolute',
         width: '100%',
         height: '100%',
+        position: 'relative',
       }}>
-        <div id={this.state.id} style={{ width: '100%', height: '100%' }} />
-        <div style={{
-          position: 'absolute',
-          left: '45%',
-          top: '45%',
-          display: this.state.remoteLoading ? '' : 'none',
-        }}>
-          <Loader type={LOADING_STYLE} active={true} />
-        </div>
+        <div ref='chart' style={this.props.style} />
+        {
+          this.props.showLoading
+            ? <div style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              bottom: '100%',
+              backgroundColor: 'rgba(33,33,33,0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Loader type={LOADING_STYLE} active={true} />
+            </div>
+            : null
+        }
+
       </div>
     )
   }
@@ -83,6 +71,20 @@ class ECharts extends React.Component {
 
 ECharts.propTypes = {
   config: PropTypes.object.isRequired,
+  option: PropTypes.object,
+  style: PropTypes.object,
+  showLoading: PropTypes.bool,
+}
+
+ECharts.defaultProps = {
+  style: {
+    width: '100%',
+    height: '100%',
+  },
+  config: {},
+  option: {},
+  showLoading: false,
 }
 
 export default ECharts
+

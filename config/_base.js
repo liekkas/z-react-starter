@@ -40,7 +40,9 @@ const config = {
     'react',
     'react-dom',
     'redux',
-    'react-redux',
+    'echarts',
+    'antd',
+    'lodash',
     'react-router',
   ],
 

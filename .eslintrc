@@ -1,8 +1,8 @@
 {
   "parser"  : "babel-eslint",
   "extends" : [
-    "standard",
-    "standard-react"
+//    "standard",
+//    "standard-react"
   ],
   "env"     : {
     "mocha": true,
@@ -33,6 +33,9 @@
     "react/jsx-boolean-value": 0,
     "react/prop-types": 0,
     "jsx-quotes": 0,
+    "standard/object-curly-even-spacing": 0,
+    "react/jsx-no-bind": 0,
+    "react/jsx-curly-spacing": 0,
     "operator-linebreak": [2, "before", { "overrides": { "+=": "none" } }]
   }
 }
