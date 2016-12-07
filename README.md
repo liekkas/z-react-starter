@@ -1,9 +1,6 @@
 ===== react-starter ====
 
-my react boilerplate
-基于这个模板https://github.com/davezuko/react-redux-starter-kit改造
-加入ECharts和Antd库
-> react + redux + webpack
+全面更新组件
 
 ### start
 * npm install
